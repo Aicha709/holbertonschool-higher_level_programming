@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-def read_lines(filename="", nb_lines=0):
-    with open(filename, encoding="utf-8") as fd:
-        if (nb_lines == 0):
-            print(fd.read(), end="")
-        else:
-            for line in fd:
-                if (nb_lines > 0):
-                    print(line, end="")
-                    nb_lines -= 1
+""" read from a file per lines """
+
+
+def number_of_lines(filename=""):
+    """ reads each line of a file """
+    n_lines = 0
+    with open(filename, encoding='utf-8') as a_file:
+        for a_line in a_file:
+            n_lines += 1
+
+    return n_lines
