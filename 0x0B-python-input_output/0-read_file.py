@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-""" read from a file """
+"""defines a text file-reading function."""
 
 
 def read_file(filename=""):
-    """ reads the whooole file """
-    with open(filename, encoding='utf-8') as a_file:
-        print(a_file.read(), end="")
+    """print the contents of a UTF8 text file to stdout."""
+    with open(filename, encoding="utf-8") as f:
+        print(f.read(), end="")

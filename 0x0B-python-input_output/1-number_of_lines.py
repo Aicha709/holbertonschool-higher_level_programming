@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-def number_of_lines(filename=""):
-    count = 0
-    with open(filename, encoding="utf-8") as fd:
-        for line in fd:
-            count += 1
-    return count
+"""writes a string to a text file (UTF8)"""
+
+
+def write_file(filename="", text=""):
+    """Write a string to a UTF8 text file."""
+
+    with open(filename, "w", encoding="utf-8") as f:
+        return f.write(text)
