@@ -1,2 +1,3 @@
--- show all the information of the table
-SHOW CREATE TABLE first_table
+-- This script prints the full description of the table first_table from the
+-- database hbtn_0c_0
+SHOW CREATE TABLE first_table;
