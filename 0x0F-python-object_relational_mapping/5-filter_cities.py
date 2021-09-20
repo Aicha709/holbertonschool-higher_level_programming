@@ -1,33 +1,23 @@
-
 #!/usr/bin/python3
-""" Script: lists all cities  """
-import sys
-import MySQLdb
+"""takes in the name of a state as an argument and
+lists all cities of that state,
+using the database hbtn_0e_4_usa"""
 
-if __name__ == "__main__":
-    if len(sys.argv) == 5:
-        state_name = sys.argv[4]
-        cmd = "SELECT cities.name\
-                FROM states \
-                JOIN cities ON cities.state_id = states.id\
+if __name__ == '__main__':
+
+    import MySQLdb
+    import sys
+
+    db = MySQLdb.connect(host='localhost', port=3306,
+                         user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
+
+    cur = db.cursor()
+    cur.execute("SELECT cities.name\
+                FROM cities LEFT JOIN states\
+                ON states.id = cities.state_id\
                 WHERE states.name = %s\
-                ORDER BY cities.id ASC;"
-        conn = MySQLdb.connect(
-                host="localhost",
-                port=3306,
-                user=sys.argv[1],
-                passwd=sys.argv[2],
-                db=sys.argv[3],
-                charset="utf8")
-        cur = conn.cursor()
-        cur.execute(cmd, (state_name,))
-        query_rows = cur.fetchall()
-        if (query_rows):
-            for row in query_rows[0:-1]:
-                print(row[0], end=', ')
-            print(query_rows[-1][0], end="")
-        print("")
-        cur.close()
-        conn.close()
-    else:
-        print("Usage: USER, PASSWD, DB_NAME Search")
+                ORDER BY cities.id ASC", (sys.argv[4],))
+    rows = cur.fetchall()
+    print(", ".join([row[0] for row in rows]))
+    cur.close()
+    db.close()

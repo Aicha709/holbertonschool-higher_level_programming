@@ -1,31 +1,23 @@
 #!/usr/bin/python3
-""" Script: lists all State objects that contain the letter """
-from model_state import State, Base
-from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.orm import sessionmaker
-import sys
+"""adds the State object “Louisiana”
+to the database hbtn_0e_6_usa"""
 
 if __name__ == "__main__":
-    if len(sys.argv) == 5:
-        usr_name = sys.argv[1]
-        usr_pass = sys.argv[2]
-        usr_db = sys.argv[3]
-        usr_match = sys.argv[4]
-        engine = create_engine("mysql+mysqldb://{}:{}@localhost:3306/{}".
-                               format(usr_name, usr_pass, usr_db))
-        Session = sessionmaker(bind=engine)
 
-        session = Session()
-        try:
-            state = session.query(State).\
-                    filter(State.name == usr_match).\
-                    one()
-            if state:
-                print(state.id)
-            else:
-                print("Not found")
-        except:
-            print("Not found")
-        session.close()
+    import sys
+    from model_state import Base, State
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import Session
+
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
+                           .format(sys.argv[1], sys.argv[2],
+                                   sys.argv[3]), pool_pre_ping=True)
+    Base.metadata.create_all(engine)
+
+    session = Session(engine)
+    state = session.query(State).filter(State.name == sys.argv[4]).first()
+    if state:
+        print("{}".format(state.id))
     else:
-        print("my sql username pass db match")
+        print("Not found")
+    session.close()
